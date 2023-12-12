@@ -1,4 +1,4 @@
-# The bad sounds bed-er in a song: New Zealand listeners expect American singing accents
+# The *bad* sounds *bed*-er in a song: New Zealand listeners expect American singing accents
 
 ## Supplementary Materials
 Andy Gibson and Jen Hay
