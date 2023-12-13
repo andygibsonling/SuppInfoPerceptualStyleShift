@@ -10,8 +10,8 @@ This directory contains the stimuli for two experiments, the Phoneme Categorisat
 
 - `LDT_PitchedAndNormalised150Files_NZvoice.zip` contains all the soundfiles of stimuli by the NZ speaker, after all processing
 - `LDT_PitchedAndNormalised150Files_USvoice.zip` contains all the soundfiles of stimuli by the US speaker, after all processing
-- `LDT_ScienceMusicByRyanPodlubny_45Pascal_3m14.mp3`: background music
-- `LDT_Noise_0285Pascal_3m10.mp3`: background noise
+- `LDT_ScienceMusicByRyanPodlubny_045Pascal_3m14.mp3`: background music.  Note the root-mean squared amplitude is 0.045Pascal
+- `LDT_Noise_0285Pascal_3m10.mp3`: background noise. Note the root-mean squared amplitude is 0.0285Pascal
 
 ### PCT files:
 
