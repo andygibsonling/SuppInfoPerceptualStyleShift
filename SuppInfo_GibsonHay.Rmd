@@ -3,7 +3,6 @@ title: "SupplementaryInfo_GibsonHay_LaS"
 author: "Andy Gibson, Jen Hay"
 date: "`r Sys.Date()`"
 output: html_document
-fontsize: 10
 ---
 
 ```{r setup, include=FALSE}
@@ -35,6 +34,7 @@ library(lme4) # run models
 library(effects) # get model predictions
 library(emmeans) # do pairwise analyses
 library(lmerTest) # estimate p-values when summarising lmer models
+library(xtable) # get tables formatted for latex
 
 
 # set up vif.mer function for later
@@ -219,13 +219,21 @@ knitr::kable(pctTable, caption="Model of PCT responses")
 
 ```
 
-## Get a version of the model summary for latex
-```{r latex, include=FALSE}
-# get table for latex
+
+```{r PCT latex, include=FALSE}
+# Get a version of the model summary for latex
+
 xtable(summary(PCT_mod)[["coefficients"]], digits=3)
 
 ```
 
+
+
+Check the VIF on the model
+```{r LDT vif, message = F, results = 'hide'}
+vif.mer(PCT_mod)
+```
+Max VIF = 3.6.  No problem with collinearity
 
 ## PCT model to check the individual non-music conditions against music
 
@@ -347,7 +355,18 @@ ldtTable = tableify(LDT_Acc_mod)
 knitr::kable(ldtTable, caption="Model of LDT Accuracy model")
 ```
 
+```{r LDT accuracy latex, include=FALSE}
+# get table for latex
+xtable(summary(LDT_Acc_mod)[["coefficients"]], digits=3)
 
+```
+
+
+Check the VIF on the model
+```{r Acc LDT vif, message = F, results = 'hide'}
+vif.mer(LDT_Acc_mod)
+```
+Max VIF = 2.1.  No problematic collinearity
 
 ## Run Experiment 2 reaction time model
 
@@ -371,9 +390,16 @@ knitr::kable(ldtTable, caption="Model of LDT RT model")
 ```
 Condition and Voice interact: Music is different to non-music.
 
+```{r LDT RT latex, include=FALSE}
+# get table for latex
+xtable(summary(LDT_RT_mod)[["coefficients"]], digits=3)
+
+```
+
+
 
 Check the VIF on the model
-```{r LDT vif, message = F, results = 'hide'}
+```{r LDT RT vif, message = F, results = 'hide'}
 vif.mer(LDT_RT_mod)
 ```
 The max vif = 1.99. No problematic collinearity.
@@ -385,7 +411,7 @@ Run a version of the model with treatment coding and Music condition as referenc
 LDT_RT_mod_Treatment <- lmer(RT.lcs ~  ConditionTreatment * Voice + PrevRT.lcs +
               (1 + PrevRT.lcs | Participant) + (1 + Voice | Word), 
               data = dat2)
-summary(LDT_RT_mod_Treatment)
+# summary(LDT_RT_mod_Treatment)
 
 ldtTable2 = tableify(LDT_RT_mod_Treatment)
 knitr::kable(ldtTable2, caption="Model of LDT RT model with treatment contrast coding")
@@ -418,14 +444,27 @@ effectsDF$VoiceN <- ifelse(effectsDF$Condition=="Noise", effectsDF$VoiceN +.03, 
 # PLOT IT
 effectsDF  %>%  ggplot(aes(x=VoiceN, y=RT, shape=Condition, colour=Condition, linetype = Condition, group = Condition,  ymin=lowerRT, ymax=upperRT)) +
   geom_line() +
-  geom_errorbar(width = 0.05, alpha=0.2) +
+  geom_errorbar(width = 0.05, alpha=0.2, linetype=1) +
   geom_point(data = effectsDF, aes(x = Voice), size =0) +
-  geom_point(data = effectsDF, aes(x = VoiceN)) +
+  geom_point(data = effectsDF, aes(x = VoiceN), size = 2) +
   scale_y_continuous('Reaction time (ms)', n.breaks = 6) +
   scale_x_discrete('Speaker country of origin') +
   theme_bw(base_size=16) + theme(axis.text.y = element_text(size = 10)) +
   scale_colour_brewer(palette = 'Dark2')
-# ggsave('LDT_Model_LaS_20231215.png', width=7, height = 6)
+
+# export the plot if you like
+# ggsave('LDT_mod.png', width=7, height = 5.5)
+
+```
+
+```{r anova final check}
+# fit a minimally different version of the model and check significance
+LDT_RT_mod_b <- lmer(RT.lcs ~  Condition + Voice + PrevRT.lcs +
+              (1 + PrevRT.lcs |Participant) + (1 + Voice | Word), 
+              data = dat2)
+
+
+anova(LDT_RT_mod,LDT_RT_mod_b) # 0.01. the interaction improves model fit. 
 
 ```
 
