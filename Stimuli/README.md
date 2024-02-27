@@ -1,4 +1,4 @@
-# The *bad* sounds *bed*-er in a song: New Zealand listeners expect American singing accents
+# Perceptual Style-shifting across Singing and Speech: Music activates Pop Song English for NZ Listeners
 ## Stimuli
 *Andy Gibson and Jen Hay*
 
