@@ -208,7 +208,7 @@ meanBad %>% ggplot(aes(y=meanResp, x=StimStep, colour = Condition, linetype=Cond
 ```{r PCT model}
 
 PCT_mod = glmer(Response ~ Condition * Trial24 +
-              + StimStep + StimLength + PrevStimStep + (1|Participant), 
+              + StimStep + StimLength + PrevStimStep + (1 + Condition|Participant), 
             data = dat1,  family = "binomial", glmerControl(optimizer = "bobyqa"))
 #summary(PCT_mod) 
 # 
